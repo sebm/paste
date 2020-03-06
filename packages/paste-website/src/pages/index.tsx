@@ -20,17 +20,17 @@ import {Callout, CalloutTitle} from '../components/callout';
 import {SiteLink} from '../components/SiteLink';
 import {SiteMetaDefaults} from '../constants';
 
-const LandingContainer = styled(Box)`
-  margin-right: auto;
-  margin-left: auto;
-`;
+const LandingContainer = styled(Box)({
+  marginRight: 'auto',
+  marginLeft: 'auto',
+});
 
-const IconCircle = styled(Box)`
-  justify-content: center;
-  align-items: center;
-  width: ${themeGet('space.space160')};
-  height: ${themeGet('space.space160')};
-`;
+const IconCircle = styled(Box)({
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: themeGet('space.space160'),
+  height: themeGet('space.space160'),
+});
 
 const IndexPage: React.FC<{}> = (): React.ReactElement => {
   return (

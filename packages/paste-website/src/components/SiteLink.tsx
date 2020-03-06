@@ -4,30 +4,29 @@ import {themeGet} from '@styled-system/theme-get';
 import {Link} from 'gatsby';
 
 // Link styles copied from @twilio-paste/anchor
-const StyledLink = styled(Link)`
-  color: ${themeGet('textColors.colorTextLink')};
-  text-decoration: underline;
-  outline: none;
+const StyledLink = styled(Link)({
+  color: themeGet('textColors.colorTextLink'),
+  textDecoration: 'underline',
+  outline: 'none',
 
-  &:hover {
-    color: ${themeGet('textColors.colorTextLinkHover')};
-    text-decoration: none;
-  }
+  '&:hover': {
+    color: themeGet('textColors.colorTextLinkHover'),
+    textDecoration: 'none',
+  },
 
-  &:focus,
-  &:active {
-    box-shadow: ${themeGet('shadows.shadowFocus')};
-    text-decoration: none;
-  }
+  '&:focus, &:active': {
+    boxShadow: themeGet('shadows.shadowFocus'),
+    textDecoration: 'none',
+  },
 
-  &:focus {
-    color: ${themeGet('textColors.colorTextLinkFocus')};
-  }
+  '&:focus': {
+    color: themeGet('textColors.colorTextLinkFocus'),
+  },
 
-  &:active {
-    color: ${themeGet('textColors.colorTextLinkActive')};
-  }
-`;
+  '&:active': {
+    color: themeGet('textColors.colorTextLinkActive'),
+  },
+});
 
 interface SiteLinkProps {
   children: React.ReactNode;

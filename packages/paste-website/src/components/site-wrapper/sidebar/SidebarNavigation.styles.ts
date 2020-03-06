@@ -1,17 +1,20 @@
 import {Link} from 'gatsby';
 import styled from '@emotion/styled';
 import {themeGet} from '@styled-system/theme-get';
+import css from '@styled-system/css';
 
-export const SiteNav = styled.nav`
-  margin-top: ${themeGet('space.space70')};
-  margin-bottom: ${themeGet('space.space90')};
-`;
+export const SiteNav = styled.nav(
+  css({
+    marginTop: 'space70',
+    marginBottom: 'space90',
+  })
+);
 
-export const SiteNavList = styled.ul`
-  padding: 0;
-  margin: 0;
-  list-style: none;
-`;
+export const SiteNavList = styled.ul({
+  padding: 0,
+  margin: 0,
+  listStyle: 'none',
+});
 
 interface SiteNavNestListProps {
   isOpen?: boolean;

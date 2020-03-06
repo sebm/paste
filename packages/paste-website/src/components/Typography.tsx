@@ -27,11 +27,11 @@ export const Pre: React.FC<{}> = props => {
   );
 };
 
-export const InlineCode = styled.code<{}>`
-  background-color: ${themeGet('backgroundColors.colorBackground')};
-  border-radius: ${themeGet('radii.borderRadius20')};
-  color: ${themeGet('textColors.colorText')};
-  font-size: ${themeGet('fontSizes.fontSize30')};
-  line-height: ${themeGet('lineHeights.lineHeight20')};
-  padding: ${themeGet('space.space20')} ${themeGet('space.space30')};
-`;
+export const InlineCode = styled.code<{}>({
+  backgroundColor: themeGet('backgroundColors.colorBackground'),
+  borderRadius: themeGet('radii.borderRadius20'),
+  color: themeGet('textColors.colorText'),
+  fontSize: themeGet('fontSizes.fontSize30'),
+  lineHeight: themeGet('lineHeights.lineHeight20'),
+  padding: `${themeGet('space.space20')} ${themeGet('space.space30')}`,
+});

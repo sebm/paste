@@ -17,23 +17,23 @@ interface StyledSiteBodyProps {
 }
 
 /* Wraps the entire doc site page */
-const StyledSiteBody = styled.div<StyledSiteBodyProps>`
-  position: absolute; /* Absolute so we can only scroll the inner area */
-  top: ${props => (props.activeTheme === 'default' ? PASTE_THEME_WARNING_BANNER_OFFSET : '0')};
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  min-height: 100vh;
-  min-width: 240px;
-  height: 100vh;
-  overflow: hidden;
+const StyledSiteBody = styled.div<StyledSiteBodyProps>(props => ({
+  position: 'absolute' /* Absolute so we can only scroll the inner area */,
+  top: props.activeTheme === 'default' ? PASTE_THEME_WARNING_BANNER_OFFSET : '0',
+  right: 0,
+  bottom: 0,
+  left: 0,
+  display: 'flex',
+  minHeight: '100vh',
+  minWidth: '240px',
+  height: '100vh',
+  overflow: 'hidden',
 
-  @supports (display: grid) {
-    display: grid;
-    grid-template-columns: ${SIDEBAR_WIDTH} 1fr;
-  }
-`;
+  '@supports (display: grid)': {
+    display: 'grid',
+    gridTemplateColumns: `${SIDEBAR_WIDTH} 1fr`,
+  },
+}));
 
 export const SiteBody: React.FC = ({children}) => {
   const {theme: activeTheme} = useActiveSiteTheme();

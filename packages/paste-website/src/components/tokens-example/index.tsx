@@ -126,6 +126,7 @@ export const TokenExample: React.FC<TokenExampleProps> = ({token}) => {
     case 'background-color':
       return <ColorBox backgroundColor={tokenName as keyof ThemeShape['backgroundColors']} />;
     case 'color':
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return <ColorBox backgroundColor={token.value as any} />;
     case 'border-color':
       return <BorderBox borderColor={tokenName as keyof ThemeShape['borderColors']} />;

@@ -9,15 +9,15 @@ import {Paragraph} from '@twilio-paste/paragraph';
 import {TWILIO_BLUE} from '../../constants';
 import {TwilioIcon} from '../icons/TwilioIcon';
 
-const StyledFooter = styled.footer`
-  margin-top: 96px;
-  padding: ${themeGet('space.space150')};
-  background-color: ${themeGet('colors.colorGray10')};
-`;
+const StyledFooter = styled.footer({
+  marginTop: '96px',
+  padding: themeGet('space.space150'),
+  backgroundColor: themeGet('colors.colorGray10'),
+});
 
-const StyledFooterLogo = styled(TwilioIcon)`
-  margin: 0 auto ${themeGet('space.space40')};
-`;
+const StyledFooterLogo = styled(TwilioIcon)({
+  margin: `0 auto ${themeGet('space.space40')}`,
+});
 
 const SiteFooter: React.FC<{}> = () => {
   return (
