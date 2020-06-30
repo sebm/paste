@@ -1,85 +1,84 @@
 import * as React from 'react';
 import {storiesOf} from '@storybook/react';
 import {withKnobs} from '@storybook/addon-knobs';
+import {Button} from '@twilio-paste/button';
+
 import {Stack} from '@twilio-paste/stack';
 import {Text} from '@twilio-paste/text';
 import {MediaObject, MediaBody, MediaFigure} from '@twilio-paste/media-object';
 import {InformationIcon} from '@twilio-paste/icons/esm/InformationIcon';
 import {ChevronDownIcon} from '@twilio-paste/icons/esm/ChevronDownIcon';
 import {MoreIcon} from '@twilio-paste/icons/esm/MoreIcon';
-import {Menu, MenuButton, SubMenuButton, MenuItem, MenuSeparator, useMenuState} from '../src';
+
+import {MenuWrapper, MenuButton, Menu, MenuItem, MenuItemSubMenu, MenuSeparator} from '../src';
+
+const PreferencesMenu: React.FC = () => {
+  return (
+    <MenuWrapper>
+      <MenuButton>Preferences</MenuButton>
+      <Menu aria-label="Preferences">
+        <MenuItem>Settings</MenuItem>
+        <MenuItem disabled>Extensions</MenuItem>
+        <MenuSeparator />
+        <MenuItem>Keyboard shortcuts</MenuItem>
+      </Menu>
+    </MenuWrapper>
+  );
+};
 
 const PlainMenu: React.FC<{}> = () => {
-  const menu = useMenuState();
   return (
-    <>
-      <MenuButton {...menu} variant="primary">
-        Preferences <ChevronDownIcon decorative />
-      </MenuButton>
-      <Menu {...menu} aria-label="Preferences">
-        <MenuItem {...menu}>Settings</MenuItem>
-        <MenuItem {...menu} disabled>
-          Extensions
-        </MenuItem>
-        <MenuSeparator {...menu} />
-        <MenuItem {...menu}>Keyboard shortcuts</MenuItem>
+    <MenuWrapper>
+      <MenuButton variant="secondary">Aaaachoo!</MenuButton>
+      <Menu aria-label="Options">
+        <MenuItem onClick={() => alert(1)}>Open an alert</MenuItem>
+        <MenuItem href="https://google.com">Go to Google</MenuItem>
+        <MenuItem as={PreferencesMenu} />
       </Menu>
-    </>
+    </MenuWrapper>
   );
 };
 
-const PreferencesMenu = React.forwardRef<HTMLButtonElement, {}>((props, ref) => {
-  const menu = useMenuState();
+const SubMenu: React.FC = () => {
   return (
-    <>
-      <SubMenuButton ref={ref} {...menu} {...props}>
-        Preferences
-      </SubMenuButton>
-      <Menu {...menu} aria-label="Preferences">
-        <MenuItem {...menu}>Settings</MenuItem>
-        <MenuItem {...menu} disabled>
-          Extensions
-        </MenuItem>
-        <MenuSeparator {...menu} />
-        <MenuItem {...menu}>Keyboard shortcuts</MenuItem>
-      </Menu>
-    </>
-  );
-});
-
-const SubMenu: React.FC<{}> = () => {
-  const menu = useMenuState();
-  return (
-    <>
-      <MenuButton {...menu} variant="secondary">
+    <MenuWrapper>
+      <MenuButton variant="secondary">
         Code <ChevronDownIcon decorative />
       </MenuButton>
-      <Menu {...menu} aria-label="Code">
-        <MenuItem {...menu}>About Visual Studio Code</MenuItem>
-        <MenuItem {...menu}>Check for Updates...</MenuItem>
-        <MenuSeparator {...menu} />
-        <MenuItem {...menu} as={PreferencesMenu} />
+      <Menu aria-label="Code">
+        <MenuItem>About Visual Studio Code</MenuItem>
+        <MenuItem>Check for Updates...</MenuItem>
+        <MenuSeparator />
+        <MenuWrapper>
+          <MenuItemSubMenu>Preferences</MenuItemSubMenu>
+          <Menu aria-label="Preferences">
+            <MenuItem>Settings</MenuItem>
+            <MenuItem disabled>Extensions</MenuItem>
+            <MenuSeparator />
+            <MenuItem>Keyboard shortcuts</MenuItem>
+          </Menu>
+        </MenuWrapper>
       </Menu>
-    </>
+    </MenuWrapper>
   );
 };
-
+/*
 const Example3: React.FC<{}> = () => {
-  const menu = useMenuState();
+  const SettingsItem = () => (
+    <MediaObject verticalAlign="center">
+            <MediaFigure spacing="space20">
+              <InformationIcon decorative={false} title="information" />
+            </MediaFigure>
+            <MediaBody>Settings</MediaBody>
+          </MediaObject>
+  )
   return (
     <>
       <MenuButton {...menu} variant="secondary" size="icon">
         <InformationIcon decorative={false} title="show information" />
       </MenuButton>
       <Menu {...menu} aria-label="Preferences">
-        <MenuItem {...menu}>
-          <MediaObject verticalAlign="center">
-            <MediaFigure spacing="space20">
-              <InformationIcon decorative={false} title="information" />
-            </MediaFigure>
-            <MediaBody>Settings</MediaBody>
-          </MediaObject>
-        </MenuItem>
+        <MenuItem as={SettingsItem} />
         <MenuItem {...menu} disabled>
           Extensions
         </MenuItem>
@@ -143,7 +142,7 @@ const WithActionsMenu: React.FC<{}> = () => {
     </>
   );
 };
-
+*/
 storiesOf('Components|Menu', module)
   .addDecorator(withKnobs)
   .add('default', () => {
@@ -151,8 +150,8 @@ storiesOf('Components|Menu', module)
   })
   .add('sub menu', () => {
     return <SubMenu />;
-  })
-  .add('actions demo menu', () => {
+  });
+/*.add('actions demo menu', () => {
     return <WithActionsMenu />;
   })
   .add('menu dropdown', () => {
@@ -255,4 +254,4 @@ storiesOf('Components|Menu', module)
         </Stack>
       </>
     );
-  });
+  });*/
