@@ -1,0 +1,171 @@
+---
+title: Inclusive Design Checklist
+description: Things to consider while designing inclusive, accessible experiences for Twilio users.
+slug: /getting-started/inclusive-design/
+---
+
+import {graphql} from 'gatsby';
+import {
+  UnorderedList,
+  ListItem,
+  Stack,
+  Anchor,
+  Disclosure,
+  DisclosureHeading,
+  DisclosureContent,
+} from '@twilio-paste/core';
+import {Callout, CalloutTitle, CalloutText} from '../../../components/callout';
+import {Grid} from '../../../components/grid';
+import {Link} from 'gatsby';
+
+<content>
+<h1>{props.pageContext.frontmatter.title}</h1>
+
+<p>{props.pageContext.frontmatter.description}</p>
+
+</content>
+
+---
+
+<contentwrapper>
+
+<content>
+<Stack orientation="vertical" spacing="space30">
+  <Disclosure variant="contained">
+  <DisclosureHeading as="h2" variant="heading20">
+    Considerations for everyone
+  </DisclosureHeading>
+  <DisclosureContent>
+    <UnorderedList>
+      <ListItem>Remove potentially insensitive or uninclusive language (use "singular they") <Anchor href="http://alexjs.com/">(Why it matters)</Anchor></ListItem>
+      <ListItem>Give video content captions and transcripts</ListItem>
+      <ListItem>Provide transcripts for audio content</ListItem>
+      <ListItem>Make sure controls do not elicit unexpected or jarring behavior <Anchor href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/consistent-behavior-receive-focus.html">(Why it matters)</Anchor> <Anchor href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/consistent-behavior-unpredictable-change.html">(Why it matters)</Anchor></ListItem>
+      <ListItem>Provide alternative text for salient images <Anchor href="https://www.w3.org/WAI/tutorials/images/decision-tree/">(Why it matters)</Anchor></ListItem>
+      <ListItem>Make sure text and background colors contrast sufficiently <Anchor href="https://accessibility.blog.gov.uk/2016/06/17/colour-contrast-why-does-it-matter/">(Why it matters)</Anchor></ListItem>
+    </UnorderedList>
+  </DisclosureContent>
+</Disclosure>
+
+<Disclosure variant="contained">
+  <DisclosureHeading as="h2" variant="heading20">
+    Considerations for UX and Front-End engineers
+  </DisclosureHeading>
+  <DisclosureContent>
+    <UnorderedList>
+      <ListItem>
+        Minify CSS and JS, and remove unused/redundant code{' '}
+        <Anchor href="https://developers.google.com/speed/docs/insights/MinifyResources">(Why it matters)</Anchor>
+      </ListItem>
+      <ListItem>
+        Maintain terse HTML, without over-reliance on `div` scaffolding{' '}
+        <Anchor href="http://designingforperformance.com/optimizing-markup-and-styles/#divitis">
+          (Why it matters)
+        </Anchor>
+      </ListItem>
+      <ListItem>
+        Use screen reader and keyboard accessible HTML{' '}
+        <Anchor href="https://developer.mozilla.org/en-US/docs/Learn/Accessibility/HTML">(Why it matters)</Anchor>
+      </ListItem>
+      <ListItem>
+        Compress raster images{' '}
+        <Anchor href="https://www.html5rocks.com/en/tutorials/speed/img-compression/">(Why it matters)</Anchor>
+      </ListItem>
+      <ListItem>
+        Optimize SVG path data{' '}
+        <Anchor href="https://web-design-weekly.com/2014/10/22/optimizing-svg-web/">(Why it matters)</Anchor>
+      </ListItem>
+      <ListItem>
+        Make sure main body (paragraph) text is no smaller than the default (user agent) size{' '}
+        <Anchor href="https://www.smashingmagazine.com/2011/10/16-pixels-body-copy-anything-less-costly-mistake/">
+          (Why it matters)
+        </Anchor>
+      </ListItem>
+      <ListItem>Support "pinch zoom" (remove `user-scalable=no` if present)</ListItem>
+      <ListItem>Use relative units (`em`, `rem`, and `ch`), especially for font metrics</ListItem>
+      <ListItem>
+        Make sure styles and scripts are not render blocking{' '}
+        <Anchor href="https://csabapalfi.github.io/eliminate-render-blocking/">(Why it matters)</Anchor>
+      </ListItem>
+      <ListItem>
+        Install a service worker and cache all applicable assets{' '}
+        <Anchor href="https://css-tricks.com/serviceworker-for-offline/">(Why it matters)</Anchor>
+      </ListItem>
+      <ListItem>
+        Use content-based, not device-specific, media queries{' '}
+        <Anchor href="http://bradfrost.com/blog/post/7-habits-of-highly-effective-media-queries/#content">
+          (Why it matters)
+        </Anchor>
+      </ListItem>
+      <ListItem>Honor requests to remove animation via the `prefers-reduced-motion` media query</ListItem>
+      <ListItem>
+        Do not include third parties that compromise user privacy{' '}
+        <Anchor href="https://css-tricks.com/potential-dangers-of-third-party-javascript/">(Why it matters)</Anchor>
+      </ListItem>
+      <ListItem>Do not recreate supported and expected browser behaviors with bespoke scripts</ListItem>
+      <ListItem>
+        Support Windows high contrast mode (use images, not background images){' '}
+        <Anchor href="http://adrianroselli.com/2012/08/css-background-images-high-contrast-mode.html">
+          (Why it matters)
+        </Anchor>
+      </ListItem>
+      <ListItem>
+        Apply `alt="` or `aria-hidden="true"` to decorative images{' '}
+        <Anchor href="https://www.w3.org/WAI/tutorials/images/decorative/">(Why it matters)</Anchor>
+      </ListItem>
+      <ListItem>
+        Provide `title`s that name the site and the specific page{' '}
+        <Anchor href="https://www.w3.org/TR/WCAG20-TECHS/G88.html">(Why it matters)</Anchor>
+      </ListItem>
+      <ListItem>
+        Provide large touch "targets" for interactive elements{' '}
+        <Anchor href="http://www.bbc.co.uk/guidelines/futuremedia/accessibility/mobile/design/touch-target-size">
+          (Why it matters)
+        </Anchor>
+      </ListItem>
+      <ListItem>Use data tables (`table`) for data only, not visual layout purposes</ListItem>
+      <ListItem>Make scrollable elements focusable for keyboard users</ListItem>
+      <ListItem>Ensure keyboard focus order is logical regarding visual layout</ListItem>
+      <ListItem>Lazy load large image assets</ListItem>
+      <ListItem>
+        Honour DNT (Do Not Track) header{' '}
+        <Anchor href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/DNT">(Why it matters)</Anchor>
+      </ListItem>
+      <ListItem>Do not hijack standard scrolling behavior</ListItem>
+      <ListItem>Move focus between dialogs and the controls that invoked them</ListItem>
+      <ListItem>Provide status and error messages as WAI-ARIA live regions</ListItem>
+      <ListItem>Provide clear, unambiguous focus styles</ListItem>
+      <ListItem>Ensure states (pressed, expanded, invalid, etc) are communicated to assistive software</ListItem>
+      <ListItem>Match semantics to behavior for assistive technology users</ListItem>
+    </UnorderedList>
+  </DisclosureContent>
+</Disclosure>
+
+<Disclosure variant="contained">
+  <DisclosureHeading as="h2" variant="heading20">
+    Considerations for product designers
+  </DisclosureHeading>
+  <DisclosureContent>
+    <UnorderedList>
+      <ListItem>
+        Make sure heading levels describe a logical section/subsection structure{' '}
+        <Anchor href="https://webaim.org/techniques/semanticstructure/">(Why it matters)</Anchor>
+      </ListItem>
+      <ListItem>Provide alternatives and/or descriptions for complex visualizations</ListItem>
+      <ListItem>Include only clear, meaningful animations</ListItem>
+      <ListItem>Do not rely on color as the only means of differentiation of visual elements</ListItem>
+      <ListItem>Use the same design patterns to solve the same problems</ListItem>
+      <ListItem>Translate / spell out acronyms the first time you use them</ListItem>
+      <ListItem>Give all form elements permanently visible labels</ListItem>
+      <ListItem>Give grouped form elements group labels</ListItem>
+      <ListItem>Place labels above form elements</ListItem>
+      <ListItem>Employ well-balanced, highly legible fonts (not too complex or elaborate)</ListItem>
+      <ListItem>Do not use very thin font faces <Anchor href="http://www.telegraph.co.uk/science/2016/10/23/internet-is-becoming-unreadable-because-of-a-trend-towards-light/">(Why it matters)</Anchor></ListItem>
+    </UnorderedList>
+  </DisclosureContent>
+</Disclosure>
+</Stack>
+
+</content>
+
+</contentwrapper>
