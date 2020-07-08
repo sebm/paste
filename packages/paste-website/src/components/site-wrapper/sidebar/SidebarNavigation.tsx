@@ -135,12 +135,15 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = () => {
             isOpen={gettingStartedOpen}
             aria-expanded={gettingStartedOpen}
           >
-            Getting Started
+            Guides
             <SiteNavAnchorArrow isOpen={gettingStartedOpen} />
           </SiteNavButton>
           <SiteNavNestList isOpen={gettingStartedOpen}>
             <SiteNavItem>
-              <SiteNavAnchor to="/getting-started/engineering">Engineering Guidelines</SiteNavAnchor>
+              <SiteNavAnchor to="/getting-started/engineering">Engineering Quickstart</SiteNavAnchor>
+            </SiteNavItem>
+            <SiteNavItem>
+              <SiteNavAnchor to="/getting-started/inclusive-design">Inclusive Design</SiteNavAnchor>
             </SiteNavItem>
           </SiteNavNestList>
         </SiteNavItem>
