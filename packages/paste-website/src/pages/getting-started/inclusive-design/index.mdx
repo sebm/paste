@@ -20,6 +20,22 @@ import {Callout, CalloutTitle, CalloutText} from '../../../components/callout';
 import {Grid} from '../../../components/grid';
 import {Link} from 'gatsby';
 
+export const pageQuery = graphql`
+  {
+    mdx(fields: {slug: {eq: "/getting-started/inclusive-design/"}}) {
+      fileAbsolutePath
+      frontmatter {
+        slug
+        title
+      }
+      headings {
+        depth
+        value
+      }
+    }
+  }
+`;
+
 <content>
 <h1>{props.pageContext.frontmatter.title}</h1>
 
@@ -28,6 +44,10 @@ import {Link} from 'gatsby';
 </content>
 
 ---
+
+<contentwrapper>
+
+<PageAside data={props.data.mdx} />
 
 <content>
 
@@ -70,7 +90,7 @@ We recommend using this guide in the following ways:
 
 <Disclosure variant="contained">
   <DisclosureHeading as="h3" variant="heading30">
-    Product design
+    For product designers
   </DisclosureHeading>
   <DisclosureContent>
     <UnorderedList>
@@ -145,7 +165,7 @@ We recommend using this guide in the following ways:
 
 <Disclosure variant="contained">
   <DisclosureHeading as="h3" variant="heading30">
-    UX and Front-End engineering
+    For UX and front-end engineers
   </DisclosureHeading>
   <DisclosureContent>
     <UnorderedList>
@@ -262,3 +282,4 @@ We recommend using this guide in the following ways:
 </Stack>
 
 </content>
+</contentwrapper>
