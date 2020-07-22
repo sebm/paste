@@ -5,7 +5,7 @@ import {ResponsiveValue, TLengthStyledSystem} from '@twilio-paste/styling-librar
 
 // Tokens
 export type BackgroundColorOptions = keyof ThemeShape['backgroundColors'];
-export type BackgroundColor = ResponsiveValue<BackgroundColorOptions>;
+export type BackgroundColor = ResponsiveValue<BackgroundColorOptions | 'none'>;
 
 // CSS native
 export type BackgroundImageOptions = CSS.BackgroundImageProperty;

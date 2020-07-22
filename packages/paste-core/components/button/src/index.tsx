@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
+// import {variant} from '@twilio-paste/styling-library';
+import {Box} from '@twilio-paste/box';
 import {Spinner} from '@twilio-paste/spinner';
 import {ButtonWrapper, ButtonChildren, SpinnerWrapper} from './styles';
 import {ButtonProps, ButtonStates, ButtonVariants, ButtonSizes, ButtonTabIndexes} from './types';
@@ -47,6 +49,138 @@ const getButtonState = (disabled?: boolean, loading?: boolean): ButtonStates => 
     return 'loading';
   }
   return 'default';
+};
+
+const SizeStyles = {
+  default: {
+    padding: 'space30',
+    borderRadius: 'borderRadius20',
+    fontSize: 'fontSize30',
+    lineHeight: 'lineHeight30',
+  },
+  small: {
+    padding: 'space10',
+    borderRadius: 'borderRadius10',
+    fontSize: 'fontSize30',
+    lineHeight: 'lineHeight30',
+  },
+  icon: {
+    padding: 'space30',
+    borderRadius: 'borderRadius20',
+    fontSize: '100%',
+    /* To fix abnormal button padding-bottom */
+    lineHeight: 'unset',
+  },
+  reset: {
+    padding: 'space0',
+    fontSize: '100%',
+  },
+};
+
+const PrimaryButton: React.FC<{buttonState: ButtonStates}> = ({buttonState, children}) => {
+  /*
+   * defensively resetting interaction color from over zealous legacy
+   * global styles "a {...}" when button is set as an anchor
+   */
+  const interactionColor = {color: 'colorTextInverse'};
+  const baseStyles = {
+    color: 'colorTextInverse',
+    _hover: interactionColor,
+    _focus: interactionColor,
+    _active: interactionColor,
+  };
+  const enabled = {
+    ...baseStyles,
+    backgroundColor: 'colorBackgroundPrimary',
+    boxShadow: 'inset 0 0 0 space.space10 colorBackgroundPrimary',
+
+    _hover: {
+      //NOTE: manual deep merge, maybe use lodash?
+      ...baseStyles._hover,
+      backgroundColor: 'colorBackgroundPrimaryDarker',
+      boxShadow: 'inset 0 0 0 space10 colorBackgroundPrimaryDarker',
+    },
+    _focus: {
+      ...baseStyles._focus,
+      backgroundColor: 'colorBackgroundPrimary',
+      //NOTE: how do we handle these? We surely shouldnt make a token for each of these...
+      //so how will Box accept them?
+      boxShadow: 'inset 0 0 0 space10 colorBackgroundPrimaryDarker, shadowFocus',
+    },
+    _active: {
+      ...baseStyles._active,
+      backgroundColor: 'colorBackgroundPrimaryDark',
+      boxShadow: 'inset 0 0 0 space10 colorBackgroundPrimaryDarker, shadowFocus',
+    },
+  };
+  const loadingStyles = {
+    backgroundColor: 'colorBackgroundPrimaryDarker',
+    boxShadow: 'inset 0 0 0 space10 colorBackgroundPrimaryDarker',
+  };
+  const loading = {
+    ...loadingStyles,
+    _hover: loadingStyles,
+    _active: loadingStyles,
+    _focus: loadingStyles,
+  };
+
+  const disabledStyles = {
+    backgroundColor: 'colorBackgroundPrimaryLight',
+    boxShadow: 'inset 0 0 0 space10 colorBackgroundPrimaryLight',
+  };
+  const disabled = {
+    ...disabledStyles,
+    _hover: disabledStyles,
+    _active: disabledStyles,
+  };
+
+  //NOTE: hover styles get overriden so we can't do "baseStyles"
+  //we have to pass base styles to each variant instead
+  //NOTE: how common is this pattern? variant + states (loading/disabled) + optional 3rd level alternator (size)
+  return <Box {...enabled}>{children}</Box>;
+};
+
+// memo
+const X: React.FC<any> = ({size, disabled}) => {
+  // wrap in cache hook
+  const cursor = loading ? 'wait' : disabled ? 'not-allowed' : 'pointer';
+  /*
+    defensively resetting from over zealous legacy global
+    styles "a {...}" when button is set as an anchor
+  */
+  const hoverStyles = {
+    textDecoration: 'none',
+  };
+  const focusStyles = {
+    boxShadow: 'shadowFocus',
+  };
+
+  return (
+    <Box
+      as={PrimaryButton}
+      appearance="none"
+      borderWidth="borderWidth0"
+      borderStyle="none"
+      borderColor="transparent"
+      display="inline-block"
+      outline="none"
+      backgroundColor="none"
+      transition="background-color 100ms ease-in, box-shadow 100ms ease-in"
+      fontFamily="fontFamilyText"
+      fontWeight="fontWeightSemibold"
+      textDecoration="none"
+      {...SizeStyles[size]}
+      cursor={cursor}
+      _hover={hoverStyles}
+      _focus={{...hoverStyles, ...focusStyles}}
+      _active={{...hoverStyles, ...focusStyles}}
+      __moz_focus_inner={{
+        border: 'none',
+      }}
+    >
+      {children}
+    </Box>
+  );
 };
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
