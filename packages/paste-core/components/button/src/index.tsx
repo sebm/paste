@@ -53,16 +53,22 @@ const getButtonState = (disabled?: boolean, loading?: boolean): ButtonStates => 
 
 const SizeStyles = {
   default: {
-    padding: 'space30',
+    paddingTop: 'space30',
+    paddingBottom: 'space30',
+    paddingLeft: 'space50',
+    paddingRight: 'space50',
     borderRadius: 'borderRadius20',
     fontSize: 'fontSize30',
-    lineHeight: 'lineHeight30',
+    lineHeight: 'lineHeight20',
   },
   small: {
-    padding: 'space10',
+    paddingTop: 'space10',
+    paddingBottom: 'space10',
+    paddingLeft: 'space30',
+    paddingRight: 'space30',
     borderRadius: 'borderRadius10',
     fontSize: 'fontSize30',
-    lineHeight: 'lineHeight30',
+    lineHeight: 'lineHeight20',
   },
   icon: {
     padding: 'space30',
@@ -77,7 +83,21 @@ const SizeStyles = {
   },
 };
 
-const PrimaryButton: React.FC<{buttonState: ButtonStates}> = ({buttonState, children}) => {
+const resetStyles = {
+  appearance: 'none',
+  borderWidth: 'borderWidth20',
+  borderStyle: 'solid',
+  borderColor: 'transparent',
+  display: 'inline-block',
+  outline: 'none',
+  backgroundColor: 'none',
+  transition: 'background-color 100ms ease-in, border-color 100ms ease-in',
+  fontFamily: 'fontFamilyText',
+  fontWeight: 'fontWeightSemibold',
+  textDecoration: 'none',
+};
+
+const PrimaryButton: React.FC<{buttonState: ButtonStates}> = ({cursor, children, size, __moz_focus_inner}) => {
   /*
    * defensively resetting interaction color from over zealous legacy
    * global styles "a {...}" when button is set as an anchor
@@ -90,34 +110,38 @@ const PrimaryButton: React.FC<{buttonState: ButtonStates}> = ({buttonState, chil
     _active: interactionColor,
   };
   const enabled = {
+    ...resetStyles,
     ...baseStyles,
     backgroundColor: 'colorBackgroundPrimary',
-    boxShadow: 'inset 0 0 0 space.space10 colorBackgroundPrimary',
+    borderColor: 'colorBorderPrimary',
 
     _hover: {
-      //NOTE: manual deep merge, maybe use lodash?
+      // NOTE: manual deep merge, maybe use lodash?
+      // eslint-disable-next-line no-underscore-dangle
       ...baseStyles._hover,
       backgroundColor: 'colorBackgroundPrimaryDarker',
-      boxShadow: 'inset 0 0 0 space10 colorBackgroundPrimaryDarker',
+      borderColor: 'colorBorderPrimaryDarker',
     },
     _focus: {
+      // eslint-disable-next-line no-underscore-dangle
       ...baseStyles._focus,
-      backgroundColor: 'colorBackgroundPrimary',
-      //NOTE: how do we handle these? We surely shouldnt make a token for each of these...
-      //so how will Box accept them?
-      boxShadow: 'inset 0 0 0 space10 colorBackgroundPrimaryDarker, shadowFocus',
+      borderColor: 'colorBorderPrimaryDarker',
+      boxShadow: 'shadowFocus',
     },
     _active: {
+      // eslint-disable-next-line no-underscore-dangle
       ...baseStyles._active,
       backgroundColor: 'colorBackgroundPrimaryDark',
-      boxShadow: 'inset 0 0 0 space10 colorBackgroundPrimaryDarker, shadowFocus',
+      borderColor: 'colorBorderPrimaryDarker',
     },
   };
   const loadingStyles = {
+    color: 'colorTextInverse',
     backgroundColor: 'colorBackgroundPrimaryDarker',
-    boxShadow: 'inset 0 0 0 space10 colorBackgroundPrimaryDarker',
+    borderColor: 'colorBorderPrimaryDarker',
   };
   const loading = {
+    ...resetStyles,
     ...loadingStyles,
     _hover: loadingStyles,
     _active: loadingStyles,
@@ -125,24 +149,331 @@ const PrimaryButton: React.FC<{buttonState: ButtonStates}> = ({buttonState, chil
   };
 
   const disabledStyles = {
+    color: 'colorTextInverse',
     backgroundColor: 'colorBackgroundPrimaryLight',
-    boxShadow: 'inset 0 0 0 space10 colorBackgroundPrimaryLight',
+    borderColor: 'colorBorderPrimaryLight',
   };
   const disabled = {
+    ...resetStyles,
     ...disabledStyles,
     _hover: disabledStyles,
     _active: disabledStyles,
   };
 
-  //NOTE: hover styles get overriden so we can't do "baseStyles"
-  //we have to pass base styles to each variant instead
-  //NOTE: how common is this pattern? variant + states (loading/disabled) + optional 3rd level alternator (size)
-  return <Box {...enabled}>{children}</Box>;
+  // NOTE: hover styles get overriden so we can't do "baseStyles"
+  // we have to pass base styles to each variant instead
+  // NOTE: how common is this pattern? variant + states (loading/disabled) + optional 3rd level alternator (size)
+
+  // variant as prop
+  // const as styles
+  // based on variant destructure loading/disabled
+
+  return (
+    <Box as="button" cursor={cursor} __moz_focus_inner={__moz_focus_inner} {...enabled} {...SizeStyles[size]}>
+      {children}
+    </Box>
+  );
+};
+
+const SecondaryButton: React.FC<{buttonState: ButtonStates}> = ({cursor, children, size, __moz_focus_inner}) => {
+  /*
+   * defensively resetting interaction color from over zealous legacy
+   * global styles "a {...}" when button is set as an anchor
+   */
+  const interactionColor = {color: 'colorTextLinkDarker'};
+  const baseStyles = {
+    color: 'colorTextLink',
+    _hover: interactionColor,
+    _focus: interactionColor,
+    _active: interactionColor,
+  };
+  const enabled = {
+    ...resetStyles,
+    ...baseStyles,
+    backgroundColor: 'colorBackgroundBody',
+    borderColor: 'colorBorderPrimary',
+
+    _hover: {
+      // NOTE: manual deep merge, maybe use lodash?
+      // eslint-disable-next-line no-underscore-dangle
+      ...baseStyles._hover,
+      backgroundColor: 'colorBackgroundPrimaryLightest',
+      borderColor: 'colorBorderPrimaryDarker',
+    },
+    _focus: {
+      // eslint-disable-next-line no-underscore-dangle
+      ...baseStyles._focus,
+      backgroundColor: 'colorBackgroundPrimaryLightest',
+      borderColor: 'colorBorderPrimaryDarker',
+      boxShadow: 'shadowFocus',
+    },
+    _active: {
+      // eslint-disable-next-line no-underscore-dangle
+      ...baseStyles._active,
+      backgroundColor: 'colorBackgroundPrimaryLightest',
+      borderColor: 'colorBorderPrimaryDarker',
+    },
+  };
+  const loadingStyles = {
+    color: 'colorTextLinkDarker',
+    backgroundColor: 'colorBackgroundPrimaryLighter',
+    borderColor: 'colorBorderPrimaryLighter',
+  };
+  const loading = {
+    ...resetStyles,
+    ...loadingStyles,
+    _hover: loadingStyles,
+    _active: loadingStyles,
+    _focus: loadingStyles,
+  };
+
+  const disabledStyles = {
+    color: 'colorTextLinkLight',
+    backgroundColor: 'colorBackgroundBody',
+    borderColor: 'colorBorderPrimaryLight',
+  };
+  const disabled = {
+    ...resetStyles,
+    ...disabledStyles,
+    _hover: disabledStyles,
+    _active: disabledStyles,
+  };
+
+  // NOTE: hover styles get overriden so we can't do "baseStyles"
+  // we have to pass base styles to each variant instead
+  // NOTE: how common is this pattern? variant + states (loading/disabled) + optional 3rd level alternator (size)
+
+  // variant as prop
+  // const as styles
+  // based on variant destructure loading/disabled
+
+  return (
+    <Box as="button" cursor={cursor} __moz_focus_inner={__moz_focus_inner} {...enabled} {...SizeStyles[size]}>
+      {children}
+    </Box>
+  );
+};
+
+const DestructiveButton: React.FC<{buttonState: ButtonStates}> = ({cursor, children, size, __moz_focus_inner}) => {
+  /*
+   * defensively resetting interaction color from over zealous legacy
+   * global styles "a {...}" when button is set as an anchor
+   */
+  const interactionColor = {color: 'colorTextInverse'};
+  const baseStyles = {
+    color: 'colorTextInverse',
+    _hover: interactionColor,
+    _focus: interactionColor,
+    _active: interactionColor,
+  };
+  const enabled = {
+    ...resetStyles,
+    ...baseStyles,
+    backgroundColor: 'colorBackgroundDestructive',
+    borderColor: 'colorBorderDestructive',
+
+    _hover: {
+      // NOTE: manual deep merge, maybe use lodash?
+      // eslint-disable-next-line no-underscore-dangle
+      ...baseStyles._hover,
+      backgroundColor: 'colorBackgroundDestructiveDarker',
+      borderColor: 'colorBorderDestructiveDarker',
+    },
+    _focus: {
+      // eslint-disable-next-line no-underscore-dangle
+      ...baseStyles._focus,
+      borderColor: 'colorBorderDestructiveDarker',
+      boxShadow: 'shadowFocus',
+    },
+    _active: {
+      // eslint-disable-next-line no-underscore-dangle
+      ...baseStyles._active,
+      backgroundColor: 'colorBackgroundDestructiveDarker',
+      borderColor: 'colorBorderDestructiveDarker',
+    },
+  };
+  const loadingStyles = {
+    color: 'colorTextInverse',
+    backgroundColor: 'colorBackgroundDestructiveDarker',
+    borderColor: 'colorBorderDestructiveDarker',
+  };
+  const loading = {
+    ...resetStyles,
+    ...loadingStyles,
+    _hover: loadingStyles,
+    _active: loadingStyles,
+    _focus: loadingStyles,
+  };
+
+  const disabledStyles = {
+    color: 'colorTextInverse',
+    backgroundColor: 'colorBackgroundDestructiveLight',
+    borderColor: 'colorBorderDestructiveLight',
+  };
+  const disabled = {
+    ...resetStyles,
+    ...disabledStyles,
+    _hover: disabledStyles,
+    _active: disabledStyles,
+  };
+
+  // NOTE: hover styles get overriden so we can't do "baseStyles"
+  // we have to pass base styles to each variant instead
+  // NOTE: how common is this pattern? variant + states (loading/disabled) + optional 3rd level alternator (size)
+
+  // variant as prop
+  // const as styles
+  // based on variant destructure loading/disabled
+
+  return (
+    <Box as="button" cursor={cursor} __moz_focus_inner={__moz_focus_inner} {...enabled} {...SizeStyles[size]}>
+      {children}
+    </Box>
+  );
+};
+
+const LinkButton: React.FC<{buttonState: ButtonStates}> = ({cursor, children, size, __moz_focus_inner}) => {
+  /*
+   * defensively resetting interaction color from over zealous legacy
+   * global styles "a {...}" when button is set as an anchor
+   */
+  const interactionColor = {color: 'colorTextLinkDark'};
+  const baseStyles = {
+    color: 'colorTextLink',
+    backgroundColor: 'transparent',
+    _hover: {interactionColor, textDecoration: 'underline'},
+    _focus: {interactionColor, textDecoration: 'underline'},
+    _active: {color: 'colorTextLinkDarker', textDecoration: 'underline'},
+  };
+  const enabled = {
+    ...resetStyles,
+    ...baseStyles,
+
+    _hover: {
+      // NOTE: manual deep merge, maybe use lodash?
+      // eslint-disable-next-line no-underscore-dangle
+      ...baseStyles._hover,
+    },
+    _focus: {
+      // eslint-disable-next-line no-underscore-dangle
+      ...baseStyles._focus,
+    },
+    _active: {
+      // eslint-disable-next-line no-underscore-dangle
+      ...baseStyles._active,
+    },
+  };
+  const loadingStyles = {
+    color: 'colorTextLinkDarker',
+    backgroundColor: 'transparent',
+  };
+  const loading = {
+    ...resetStyles,
+    ...loadingStyles,
+    _hover: loadingStyles,
+    _active: loadingStyles,
+    _focus: loadingStyles,
+  };
+
+  const disabledStyles = {
+    color: 'colorTextLinkLight',
+    backgroundColor: 'transparent',
+  };
+  const disabled = {
+    ...resetStyles,
+    ...disabledStyles,
+    _hover: disabledStyles,
+    _active: disabledStyles,
+  };
+
+  // NOTE: hover styles get overriden so we can't do "baseStyles"
+  // we have to pass base styles to each variant instead
+  // NOTE: how common is this pattern? variant + states (loading/disabled) + optional 3rd level alternator (size)
+
+  // variant as prop
+  // const as styles
+  // based on variant destructure loading/disabled
+
+  return (
+    <Box as="button" cursor={cursor} __moz_focus_inner={__moz_focus_inner} {...disabled} {...SizeStyles[size]}>
+      {children}
+    </Box>
+  );
+};
+
+const DestructiveLinkButton: React.FC<{buttonState: ButtonStates}> = ({cursor, children, size, __moz_focus_inner}) => {
+  /*
+   * defensively resetting interaction color from over zealous legacy
+   * global styles "a {...}" when button is set as an anchor
+   */
+  const interactionColor = {color: 'colorTextLinkDestructiveDark'};
+  const baseStyles = {
+    color: 'colorTextLinkDestructive',
+    backgroundColor: 'transparent',
+    _hover: {interactionColor, textDecoration: 'underline'},
+    _focus: {interactionColor, textDecoration: 'underline'},
+    _active: {color: 'colorTextLinkDestructiveDarker', textDecoration: 'underline'},
+  };
+  const enabled = {
+    ...resetStyles,
+    ...baseStyles,
+
+    _hover: {
+      // NOTE: manual deep merge, maybe use lodash?
+      // eslint-disable-next-line no-underscore-dangle
+      ...baseStyles._hover,
+    },
+    _focus: {
+      // eslint-disable-next-line no-underscore-dangle
+      ...baseStyles._focus,
+    },
+    _active: {
+      // eslint-disable-next-line no-underscore-dangle
+      ...baseStyles._active,
+    },
+  };
+  const loadingStyles = {
+    color: 'colorTextLinkDestructiveDarker',
+    backgroundColor: 'transparent',
+  };
+  const loading = {
+    ...resetStyles,
+    ...loadingStyles,
+    _hover: loadingStyles,
+    _active: loadingStyles,
+    _focus: loadingStyles,
+  };
+
+  const disabledStyles = {
+    color: 'colorTextLinkDestructiveLight',
+    backgroundColor: 'transparent',
+  };
+  const disabled = {
+    ...resetStyles,
+    ...disabledStyles,
+    _hover: disabledStyles,
+    _active: disabledStyles,
+  };
+
+  // NOTE: hover styles get overriden so we can't do "baseStyles"
+  // we have to pass base styles to each variant instead
+  // NOTE: how common is this pattern? variant + states (loading/disabled) + optional 3rd level alternator (size)
+
+  // variant as prop
+  // const as styles
+  // based on variant destructure loading/disabled
+
+  return (
+    <Box as="button" cursor={cursor} __moz_focus_inner={__moz_focus_inner} {...enabled} {...SizeStyles[size]}>
+      {children}
+    </Box>
+  );
 };
 
 // memo
-const X: React.FC<any> = ({size, disabled}) => {
+const NewButton: React.FC<any> = ({size = 'default', disabled, loading, children}) => {
   // wrap in cache hook
+  // eslint-disable-next-line no-nested-ternary
   const cursor = loading ? 'wait' : disabled ? 'not-allowed' : 'pointer';
   /*
     defensively resetting from over zealous legacy global
@@ -158,19 +489,8 @@ const X: React.FC<any> = ({size, disabled}) => {
   return (
     <Box
       as={PrimaryButton}
-      appearance="none"
-      borderWidth="borderWidth0"
-      borderStyle="none"
-      borderColor="transparent"
-      display="inline-block"
-      outline="none"
-      backgroundColor="none"
-      transition="background-color 100ms ease-in, box-shadow 100ms ease-in"
-      fontFamily="fontFamilyText"
-      fontWeight="fontWeightSemibold"
-      textDecoration="none"
-      {...SizeStyles[size]}
       cursor={cursor}
+      size={size}
       _hover={hoverStyles}
       _focus={{...hoverStyles, ...focusStyles}}
       _active={{...hoverStyles, ...focusStyles}}
@@ -265,3 +585,4 @@ Button.displayName = 'Button';
 
 export {ButtonProps};
 export {Button};
+export {NewButton};

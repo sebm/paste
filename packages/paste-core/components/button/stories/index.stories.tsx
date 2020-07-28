@@ -4,7 +4,7 @@ import {action} from '@storybook/addon-actions';
 import {withKnobs, select, text, boolean} from '@storybook/addon-knobs';
 import {PlusIcon} from '@twilio-paste/icons/esm/PlusIcon';
 import {isRenderingOnServer} from '@twilio-paste/animation-library';
-import {Button} from '../src';
+import {Button, NewButton} from '../src';
 import {ButtonVariants, ButtonSizes, ButtonTabIndexes} from '../src/types';
 
 const ButtonSizeOptions = ['', 'default', 'small', 'icon', 'reset'];
@@ -327,5 +327,18 @@ storiesOf('Components|Button', module)
           </Button>
         </section>
       </React.Fragment>
+    );
+  })
+  .add('New button', () => {
+    return (
+      <>
+        <section>
+          <NewButton>Submit</NewButton>
+        </section>
+        <br />
+        <section>
+          <NewButton size="small">Submit</NewButton>
+        </section>
+      </>
     );
   });
