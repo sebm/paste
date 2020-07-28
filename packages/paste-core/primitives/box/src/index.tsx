@@ -10,6 +10,8 @@ import {
   position,
   flexbox,
   system,
+  typography,
+  color,
 } from '@twilio-paste/styling-library';
 import {
   LayoutProps,
@@ -188,6 +190,8 @@ export const Box = styled.div(
     border,
     boxShadow,
     position,
+    typography,
+    color,
     extraConfig
   ),
   getPseudoStyles
