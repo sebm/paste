@@ -3,8 +3,8 @@ import * as PropTypes from 'prop-types';
 // import {variant} from '@twilio-paste/styling-library';
 import {Box} from '@twilio-paste/box';
 import {Spinner} from '@twilio-paste/spinner';
-import {ButtonWrapper, ButtonChildren, SpinnerWrapper} from './styles';
 import {ButtonProps, ButtonStates, ButtonVariants, ButtonSizes, ButtonTabIndexes} from './types';
+import {PrimaryButton} from './PrimaryButton';
 
 const handlePropValidation = (
   children: React.ReactNode,
@@ -39,16 +39,6 @@ const handlePropValidation = (
   if (hasTabIndex && !(tabIndex === 0 || tabIndex === -1)) {
     throw new Error(`[Paste: Button] tabIndex must be 0 or -1.`);
   }
-};
-
-const getButtonState = (disabled?: boolean, loading?: boolean): ButtonStates => {
-  if (disabled) {
-    return 'disabled';
-  }
-  if (loading) {
-    return 'loading';
-  }
-  return 'default';
 };
 
 const SizeStyles = {
@@ -97,85 +87,7 @@ const resetStyles = {
   textDecoration: 'none',
 };
 
-const PrimaryButton: React.FC<{buttonState: ButtonStates}> = ({cursor, children, size, __moz_focus_inner}) => {
-  /*
-   * defensively resetting interaction color from over zealous legacy
-   * global styles "a {...}" when button is set as an anchor
-   */
-  const interactionColor = {color: 'colorTextInverse'};
-  const baseStyles = {
-    color: 'colorTextInverse',
-    _hover: interactionColor,
-    _focus: interactionColor,
-    _active: interactionColor,
-  };
-  const enabled = {
-    ...resetStyles,
-    ...baseStyles,
-    backgroundColor: 'colorBackgroundPrimary',
-    borderColor: 'colorBorderPrimary',
-
-    _hover: {
-      // NOTE: manual deep merge, maybe use lodash?
-      // eslint-disable-next-line no-underscore-dangle
-      ...baseStyles._hover,
-      backgroundColor: 'colorBackgroundPrimaryDarker',
-      borderColor: 'colorBorderPrimaryDarker',
-    },
-    _focus: {
-      // eslint-disable-next-line no-underscore-dangle
-      ...baseStyles._focus,
-      borderColor: 'colorBorderPrimaryDarker',
-      boxShadow: 'shadowFocus',
-    },
-    _active: {
-      // eslint-disable-next-line no-underscore-dangle
-      ...baseStyles._active,
-      backgroundColor: 'colorBackgroundPrimaryDark',
-      borderColor: 'colorBorderPrimaryDarker',
-    },
-  };
-  const loadingStyles = {
-    color: 'colorTextInverse',
-    backgroundColor: 'colorBackgroundPrimaryDarker',
-    borderColor: 'colorBorderPrimaryDarker',
-  };
-  const loading = {
-    ...resetStyles,
-    ...loadingStyles,
-    _hover: loadingStyles,
-    _active: loadingStyles,
-    _focus: loadingStyles,
-  };
-
-  const disabledStyles = {
-    color: 'colorTextInverse',
-    backgroundColor: 'colorBackgroundPrimaryLight',
-    borderColor: 'colorBorderPrimaryLight',
-  };
-  const disabled = {
-    ...resetStyles,
-    ...disabledStyles,
-    _hover: disabledStyles,
-    _active: disabledStyles,
-  };
-
-  // NOTE: hover styles get overriden so we can't do "baseStyles"
-  // we have to pass base styles to each variant instead
-  // NOTE: how common is this pattern? variant + states (loading/disabled) + optional 3rd level alternator (size)
-
-  // variant as prop
-  // const as styles
-  // based on variant destructure loading/disabled
-
-  return (
-    <Box as="button" cursor={cursor} __moz_focus_inner={__moz_focus_inner} {...enabled} {...SizeStyles[size]}>
-      {children}
-    </Box>
-  );
-};
-
-const SecondaryButton: React.FC<{buttonState: ButtonStates}> = ({cursor, children, size, __moz_focus_inner}) => {
+export const SecondaryButton: React.FC<{buttonState: ButtonStates}> = ({cursor, children, size, __moz_focus_inner}) => {
   /*
    * defensively resetting interaction color from over zealous legacy
    * global styles "a {...}" when button is set as an anchor
@@ -254,7 +166,12 @@ const SecondaryButton: React.FC<{buttonState: ButtonStates}> = ({cursor, childre
   );
 };
 
-const DestructiveButton: React.FC<{buttonState: ButtonStates}> = ({cursor, children, size, __moz_focus_inner}) => {
+export const DestructiveButton: React.FC<{buttonState: ButtonStates}> = ({
+  cursor,
+  children,
+  size,
+  __moz_focus_inner,
+}) => {
   /*
    * defensively resetting interaction color from over zealous legacy
    * global styles "a {...}" when button is set as an anchor
@@ -332,7 +249,7 @@ const DestructiveButton: React.FC<{buttonState: ButtonStates}> = ({cursor, child
   );
 };
 
-const LinkButton: React.FC<{buttonState: ButtonStates}> = ({cursor, children, size, __moz_focus_inner}) => {
+export const LinkButton: React.FC<{buttonState: ButtonStates}> = ({cursor, children, size, __moz_focus_inner}) => {
   /*
    * defensively resetting interaction color from over zealous legacy
    * global styles "a {...}" when button is set as an anchor
@@ -401,7 +318,12 @@ const LinkButton: React.FC<{buttonState: ButtonStates}> = ({cursor, children, si
   );
 };
 
-const DestructiveLinkButton: React.FC<{buttonState: ButtonStates}> = ({cursor, children, size, __moz_focus_inner}) => {
+export const DestructiveLinkButton: React.FC<{buttonState: ButtonStates}> = ({
+  cursor,
+  children,
+  size,
+  __moz_focus_inner,
+}) => {
   /*
    * defensively resetting interaction color from over zealous legacy
    * global styles "a {...}" when button is set as an anchor
@@ -471,38 +393,25 @@ const DestructiveLinkButton: React.FC<{buttonState: ButtonStates}> = ({cursor, c
 };
 
 // memo
-const NewButton: React.FC<any> = ({size = 'default', disabled, loading, children}) => {
+export const Button: React.FC<any> = props => {
   // wrap in cache hook
   // eslint-disable-next-line no-nested-ternary
-  const cursor = loading ? 'wait' : disabled ? 'not-allowed' : 'pointer';
+  // const cursor = loading ? 'wait' : disabled ? 'not-allowed' : 'pointer';
   /*
     defensively resetting from over zealous legacy global
     styles "a {...}" when button is set as an anchor
-  */
+  
   const hoverStyles = {
     textDecoration: 'none',
   };
   const focusStyles = {
     boxShadow: 'shadowFocus',
   };
-
-  return (
-    <Box
-      as={PrimaryButton}
-      cursor={cursor}
-      size={size}
-      _hover={hoverStyles}
-      _focus={{...hoverStyles, ...focusStyles}}
-      _active={{...hoverStyles, ...focusStyles}}
-      __moz_focus_inner={{
-        border: 'none',
-      }}
-    >
-      {children}
-    </Box>
-  );
+*/
+  return <PrimaryButton {...props} />;
 };
 
+/*
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({as, children, disabled, fullWidth, href, loading, size, tabIndex, variant, ...props}, ref) => {
     const buttonState = getButtonState(disabled, loading);
@@ -586,3 +495,4 @@ Button.displayName = 'Button';
 export {ButtonProps};
 export {Button};
 export {NewButton};
+*/
