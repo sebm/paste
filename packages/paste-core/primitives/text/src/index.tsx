@@ -77,9 +77,8 @@ const extraConfig = system({
   cursor: true,
   transition: true,
   textTransform: true,
+  textDecoration: true,
 });
-
-const textDecoration = system({textDecoration: true});
 
 const getPseudoStyles = (props: TextProps): {} => {
   const pseudoProps = Object.keys(props).filter(propName => propName.startsWith('_'));
@@ -109,7 +108,6 @@ export const Text = styled.span(
     verticalAlign,
     overflow,
     position,
-    textDecoration,
     typography,
     extraConfig
   ),

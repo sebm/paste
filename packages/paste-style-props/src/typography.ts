@@ -1,13 +1,14 @@
 export const TYPOGRAPHY_PROPS = [
+  'color',
+  'letterSpacing',
+  'lineHeight',
   'fontFamily',
   'fontSize',
   'fontStyle',
   'fontWeight',
-  'letterSpacing',
-  'lineHeight',
   'textAlign',
-  'color',
   'textDecoration',
   'textOverflow',
+  'textTransform',
   'whiteSpace',
 ];

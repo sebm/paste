@@ -1,8 +1,6 @@
-import {EmotionCSS, styled, SerializedStyles, themeGet, buttonStyle} from '@twilio-paste/styling-library';
-import {Absolute} from '@twilio-paste/absolute';
-import {ButtonWrapperProps, ButtonChildrenProps} from './types';
+import {BoxStyleProps} from '@twilio-paste/box';
 
-export const SizeStyles = {
+export const SizeStyles: {[key: string]: BoxStyleProps} = {
   default: {
     paddingTop: 'space30',
     paddingBottom: 'space30',
@@ -34,7 +32,7 @@ export const SizeStyles = {
   },
 };
 
-export const resetStyles = {
+export const ResetStyles: BoxStyleProps = {
   appearance: 'none',
   borderWidth: 'borderWidth20',
   borderStyle: 'solid',
@@ -51,27 +49,21 @@ export const resetStyles = {
   },
 };
 
-export const baseEnabled = {
-  cursor: 'pointer',
-};
-export const baseDisabled = {
-  cursor: 'not-allowed',
-};
-export const baseLoading = {
-  cursor: 'wait',
+export const CursorStyles: {[key: string]: BoxStyleProps} = {
+  enabled: {
+    cursor: 'pointer',
+  },
+  disabled: {
+    cursor: 'not-allowed',
+  },
+  loading: {
+    cursor: 'wait',
+  },
 };
 
 /*
  * Sizes
  */
-
-/*
- * Variants
- */
-// Reset
-const variantResetEnabled = baseEnabled;
-const variantResetLoading = baseLoading;
-const variantResetDisabled = baseDisabled;
 
 /*
  * Style getters

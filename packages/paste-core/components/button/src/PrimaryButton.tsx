@@ -1,92 +1,116 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-// import {variant} from '@twilio-paste/styling-library';
+// import * as PropTypes from 'prop-types';
 import {Box} from '@twilio-paste/box';
-// import {Spinner} from '@twilio-paste/spinner';
-import {SizeStyles, resetStyles} from './styles';
-import {ButtonStates /* ButtonProps, ButtonVariants, ButtonSizes, ButtonTabIndexes*/} from './types';
-import {getButtonState} from './utils';
+import {
+  BackgroundColorOptions,
+  BorderColorOptions,
+  TextColorOptions,
+  BoxShadowOptions,
+} from '@twilio-paste/style-props';
+import {SizeStyles, ResetStyles, CursorStyles} from './styles';
+import {DirectButtonProps} from './types';
 
 /*
  * defensively resetting interaction color from over zealous legacy
  * global styles "a {...}" when button is set as an anchor
  */
-const interactionColor = {color: 'colorTextInverse'};
+const buttonTextColor = {color: 'colorTextInverse' as TextColorOptions};
 
-const baseStyles = {
-  color: 'colorTextInverse',
-  _hover: interactionColor,
-  _focus: interactionColor,
-  _active: interactionColor,
+const basePrimaryStyles = {
+  ...ResetStyles,
+  ...buttonTextColor,
+  _hover: buttonTextColor,
+  _focus: buttonTextColor,
+  _active: buttonTextColor,
 };
 
-const enabled = {
-  ...resetStyles,
+const defaultStyles = {
   // NOTE: hover styles get overriden so we can't just do "...baseStyles" here,
   // we have to pass base styles to each variant instead (see _hover)
-  ...baseStyles,
-  backgroundColor: 'colorBackgroundPrimary',
-  borderColor: 'colorBorderPrimary',
+  ...basePrimaryStyles,
+  ...CursorStyles.enabled,
+  backgroundColor: 'colorBackgroundPrimary' as BackgroundColorOptions,
+  borderColor: 'colorBorderPrimary' as BorderColorOptions,
 
   _hover: {
     // NOTE: manual deep merge, maybe use lodash?
     // eslint-disable-next-line no-underscore-dangle
-    ...baseStyles._hover,
-    backgroundColor: 'colorBackgroundPrimaryDarker',
-    borderColor: 'colorBorderPrimaryDarker',
+    ...basePrimaryStyles._hover,
+    backgroundColor: 'colorBackgroundPrimaryDarker' as BackgroundColorOptions,
+    borderColor: 'colorBorderPrimaryDarker' as BorderColorOptions,
   },
   _focus: {
     // eslint-disable-next-line no-underscore-dangle
-    ...baseStyles._focus,
-    borderColor: 'colorBorderPrimaryDarker',
-    boxShadow: 'shadowFocus',
+    ...basePrimaryStyles._focus,
+    borderColor: 'colorBorderPrimaryDarker' as BorderColorOptions,
+    boxShadow: 'shadowFocus' as BoxShadowOptions,
   },
   _active: {
     // eslint-disable-next-line no-underscore-dangle
-    ...baseStyles._active,
-    backgroundColor: 'colorBackgroundPrimaryDark',
-    borderColor: 'colorBorderPrimaryDarker',
+    ...basePrimaryStyles._active,
+    backgroundColor: 'colorBackgroundPrimaryDark' as BackgroundColorOptions,
+    borderColor: 'colorBorderPrimaryDarker' as BorderColorOptions,
   },
 };
-const loadingStyles = {
-  color: 'colorTextInverse',
-  backgroundColor: 'colorBackgroundPrimaryDarker',
-  borderColor: 'colorBorderPrimaryDarker',
+const baseLoadingStyles = {
+  backgroundColor: 'colorBackgroundPrimaryDarker' as BackgroundColorOptions,
+  borderColor: 'colorBorderPrimaryDarker' as BorderColorOptions,
 };
-const loading = {
-  ...resetStyles,
-  ...loadingStyles,
-  _hover: loadingStyles,
-  _active: loadingStyles,
-  _focus: loadingStyles,
+/* eslint-disable no-underscore-dangle */
+const loadingStyles = {
+  ...basePrimaryStyles,
+  ...CursorStyles.loading,
+  ...baseLoadingStyles,
+  _hover: {
+    ...basePrimaryStyles._hover,
+    ...baseLoadingStyles,
+  },
+  _active: {
+    ...basePrimaryStyles._active,
+    ...baseLoadingStyles,
+  },
+  _focus: {
+    ...basePrimaryStyles._focus,
+    ...baseLoadingStyles,
+  },
 };
 
+const baseDisabledStyles = {
+  backgroundColor: 'colorBackgroundPrimaryLight' as BackgroundColorOptions,
+  borderColor: 'colorBorderPrimaryLight' as BorderColorOptions,
+};
 const disabledStyles = {
-  color: 'colorTextInverse',
-  backgroundColor: 'colorBackgroundPrimaryLight',
-  borderColor: 'colorBorderPrimaryLight',
+  ...basePrimaryStyles,
+  ...CursorStyles.disabled,
+  ...baseDisabledStyles,
+  _hover: {
+    ...basePrimaryStyles._hover,
+    ...baseDisabledStyles,
+  },
+  _active: {
+    ...basePrimaryStyles._active,
+    ...baseDisabledStyles,
+  },
 };
-const disabled = {
-  ...resetStyles,
-  ...disabledStyles,
-  _hover: disabledStyles,
-  _active: disabledStyles,
-};
+/* eslint-enable */
 
 const ButtonStyles = {
-  default: enabled,
-  loading,
-  disabled,
+  default: defaultStyles,
+  loading: loadingStyles,
+  disabled: disabledStyles,
 };
 
-const composeStyles = (...args) => {};
-
-export const PrimaryButton: React.FC<{buttonState: ButtonStates}> = ({loading, disabled, size, children, ...props}) => {
-  const buttonState = getButtonState(disabled, loading);
-  console.log(props, loading, disabled, size, ButtonStyles[buttonState]);
-
+export const PrimaryButton: React.FC<DirectButtonProps> = ({
+  as = 'button',
+  loading,
+  disabled,
+  size,
+  children,
+  buttonState,
+  ...props
+}) => {
   return (
-    <Box as="button" {...SizeStyles[size]} {...ButtonStyles[buttonState]}>
+    <Box as={as} {...props} {...SizeStyles[size]} {...ButtonStyles[buttonState]}>
       {children}
     </Box>
   );

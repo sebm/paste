@@ -29,6 +29,7 @@ export type TextAlign = ResponsiveValue<TextAlignOptions>;
 export type FontStyle = ResponsiveValue<FontStyleOptions>;
 export type TextDecoration = ResponsiveValue<TextDecorationOptions>;
 export type TextOverflow = ResponsiveValue<TextOverflowOptions>;
+export type TextTransform = ResponsiveValue<CSS.TextTransformProperty>;
 export type WhiteSpace = ResponsiveValue<WhiteSpaceOptions>;
 
 /* Styled-system grouping
@@ -48,5 +49,6 @@ export interface TypographyProps {
   // Our custom addition
   textDecoration?: TextDecoration;
   textOverflow?: TextOverflow;
+  textTransform?: TextTransform;
   whiteSpace?: WhiteSpace;
 }

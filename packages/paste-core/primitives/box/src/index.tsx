@@ -11,7 +11,6 @@ import {
   flexbox,
   system,
   typography,
-  color,
 } from '@twilio-paste/styling-library';
 import {
   LayoutProps,
@@ -30,7 +29,6 @@ import {
   TransformProperty,
   TransformOriginProperty,
   VisibilityProperty,
-  WhiteSpaceProperty,
   UserSelectProperty,
   PointerEventsProperty,
   BoxSizingProperty,
@@ -45,22 +43,19 @@ import {
   OutlineProperty,
   FloatProperty,
   WillChangeProperty,
-  TextOverflowProperty,
-  TextTransformProperty,
 } from 'csstype';
 import {PseudoPropStyles} from './PseudoPropStyles';
 import {BoxPropTypes} from './BoxPropTypes';
 
-export interface BaseBoxProps
-  extends React.HTMLAttributes<any>,
-    LayoutProps,
+export interface BoxStyleProps
+  extends LayoutProps,
     SpaceProps,
     BackgroundProps,
     BorderProps,
     ShadowProps,
+    TypographyProps,
     PositionProps,
     FlexboxProps {
-  as?: keyof JSX.IntrinsicElements;
   content?: string;
   cursor?: CursorProperty;
   appearance?: AppearanceProperty;
@@ -68,8 +63,6 @@ export interface BaseBoxProps
   transform?: TransformProperty;
   transformOrigin?: TransformOriginProperty<string>;
   visibility?: VisibilityProperty;
-  whiteSpace?: WhiteSpaceProperty;
-  textOverflow?: TextOverflowProperty;
   userSelect?: UserSelectProperty;
   pointerEvents?: PointerEventsProperty;
   boxSizing?: BoxSizingProperty;
@@ -84,44 +77,43 @@ export interface BaseBoxProps
   outline?: OutlineProperty<string>;
   float?: FloatProperty;
   willChange?: WillChangeProperty;
-  textDecoration?: TypographyProps['textDecoration'];
-  // Do not document, we prefer if folks do not use this property for i18n.
-  textTransform?: TextTransformProperty;
+}
+
+interface PseudoStylesProps {
+  _after?: BoxStyleProps;
+  _before?: BoxStyleProps;
+  _focus?: BoxStyleProps;
+  _hover?: BoxStyleProps;
+  _active?: BoxStyleProps;
+  _pressed?: BoxStyleProps;
+  _selected?: BoxStyleProps;
+  _focusWithin?: BoxStyleProps;
+  _invalid?: BoxStyleProps;
+  _disabled?: BoxStyleProps;
+  _grabbed?: BoxStyleProps;
+  _expanded?: BoxStyleProps;
+  _checked?: BoxStyleProps;
+  _mixed?: BoxStyleProps;
+  _odd?: BoxStyleProps;
+  _even?: BoxStyleProps;
+  _visited?: BoxStyleProps;
+  _readOnly?: BoxStyleProps;
+  _first?: BoxStyleProps;
+  _last?: BoxStyleProps;
+  _groupHover?: BoxStyleProps;
+  _notFirst?: BoxStyleProps;
+  _notLast?: BoxStyleProps;
+  _placeholder?: BoxStyleProps;
+}
+
+export interface BoxProps extends Omit<React.HTMLAttributes<any>, 'color'>, BoxStyleProps, PseudoStylesProps {
+  as: keyof JSX.IntrinsicElements;
   /** Typed as any because Box can literally be any HTML element */
   ref?: any | null;
   // image props
   alt?: string;
   src?: string;
 }
-
-interface PseudoStylesProps {
-  _after?: BaseBoxProps;
-  _before?: BaseBoxProps;
-  _focus?: BaseBoxProps;
-  _hover?: BaseBoxProps;
-  _active?: BaseBoxProps;
-  _pressed?: BaseBoxProps;
-  _selected?: BaseBoxProps;
-  _focusWithin?: BaseBoxProps;
-  _invalid?: BaseBoxProps;
-  _disabled?: BaseBoxProps;
-  _grabbed?: BaseBoxProps;
-  _expanded?: BaseBoxProps;
-  _checked?: BaseBoxProps;
-  _mixed?: BaseBoxProps;
-  _odd?: BaseBoxProps;
-  _even?: BaseBoxProps;
-  _visited?: BaseBoxProps;
-  _readOnly?: BaseBoxProps;
-  _first?: BaseBoxProps;
-  _last?: BaseBoxProps;
-  _groupHover?: BaseBoxProps;
-  _notFirst?: BaseBoxProps;
-  _notLast?: BaseBoxProps;
-  _placeholder?: BaseBoxProps;
-}
-
-export interface BoxProps extends BaseBoxProps, PseudoStylesProps {}
 
 const extraConfig = system({
   backgroundColor: {
@@ -132,13 +124,15 @@ const extraConfig = system({
     property: 'borderColor',
     scale: 'borderColors',
   },
+  color: {
+    property: 'color',
+    scale: 'textColors',
+  },
   animation: true,
   appearance: true,
   transform: true,
   transformOrigin: true,
   visibility: true,
-  whiteSpace: true,
-  textOverflow: true,
   userSelect: true,
   pointerEvents: true,
   boxSizing: true,
@@ -156,8 +150,6 @@ const extraConfig = system({
   outline: true,
   float: true,
   willChange: true,
-  textDecoration: true,
-  textTransform: true,
 });
 
 const getPseudoStyles = (props: BoxProps): {} => {
@@ -177,11 +169,9 @@ const getPseudoStyles = (props: BoxProps): {} => {
   return css(pseudoStyles);
 };
 
+// TODO wtf ts
 /* eslint-disable emotion/syntax-preference */
 export const Box = styled.div(
-  {
-    boxSizing: 'border-box',
-  },
   compose(
     space,
     layout,
@@ -191,7 +181,6 @@ export const Box = styled.div(
     boxShadow,
     position,
     typography,
-    color,
     extraConfig
   ),
   getPseudoStyles

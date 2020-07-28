@@ -3,89 +3,10 @@ import * as PropTypes from 'prop-types';
 // import {variant} from '@twilio-paste/styling-library';
 import {Box} from '@twilio-paste/box';
 import {Spinner} from '@twilio-paste/spinner';
+import {getButtonState, handlePropValidation} from './utils';
+
 import {ButtonProps, ButtonStates, ButtonVariants, ButtonSizes, ButtonTabIndexes} from './types';
 import {PrimaryButton} from './PrimaryButton';
-
-const handlePropValidation = (
-  children: React.ReactNode,
-  variant: ButtonVariants,
-  as?: string,
-  fullWidth?: boolean,
-  href?: string,
-  size?: ButtonSizes,
-  tabIndex?: ButtonTabIndexes
-): void => {
-  const hasHref = href != null && href !== '';
-  const hasTabIndex = tabIndex != null;
-
-  if (as !== 'a' && hasHref) {
-    throw new Error(`[Paste: Button] You cannot pass href into a button without the 'a' tag.  Use 'as="a"'.`);
-  }
-  if (as === 'a' && !hasHref) {
-    throw new Error(`[Paste: Button] Missing href prop for link button.`);
-  }
-  if (as === 'a' && variant === 'link') {
-    throw new Error(`[Paste: Button] This should be a link. Use the [Paste: Anchor] component.`);
-  }
-  if (variant === 'reset' && size !== 'reset') {
-    throw new Error('[Paste: Button] The "RESET" variant can only be used with the "RESET" size.');
-  }
-  if (size === 'icon' && fullWidth) {
-    throw new Error('[Paste: Button] Icon buttons should not be fullWidth.');
-  }
-  if (children == null) {
-    throw new Error(`[Paste: Button] Must have non-null children.`);
-  }
-  if (hasTabIndex && !(tabIndex === 0 || tabIndex === -1)) {
-    throw new Error(`[Paste: Button] tabIndex must be 0 or -1.`);
-  }
-};
-
-const SizeStyles = {
-  default: {
-    paddingTop: 'space30',
-    paddingBottom: 'space30',
-    paddingLeft: 'space50',
-    paddingRight: 'space50',
-    borderRadius: 'borderRadius20',
-    fontSize: 'fontSize30',
-    lineHeight: 'lineHeight20',
-  },
-  small: {
-    paddingTop: 'space10',
-    paddingBottom: 'space10',
-    paddingLeft: 'space30',
-    paddingRight: 'space30',
-    borderRadius: 'borderRadius10',
-    fontSize: 'fontSize30',
-    lineHeight: 'lineHeight20',
-  },
-  icon: {
-    padding: 'space30',
-    borderRadius: 'borderRadius20',
-    fontSize: '100%',
-    /* To fix abnormal button padding-bottom */
-    lineHeight: 'unset',
-  },
-  reset: {
-    padding: 'space0',
-    fontSize: '100%',
-  },
-};
-
-const resetStyles = {
-  appearance: 'none',
-  borderWidth: 'borderWidth20',
-  borderStyle: 'solid',
-  borderColor: 'transparent',
-  display: 'inline-block',
-  outline: 'none',
-  backgroundColor: 'none',
-  transition: 'background-color 100ms ease-in, border-color 100ms ease-in',
-  fontFamily: 'fontFamilyText',
-  fontWeight: 'fontWeightSemibold',
-  textDecoration: 'none',
-};
 
 export const SecondaryButton: React.FC<{buttonState: ButtonStates}> = ({cursor, children, size, __moz_focus_inner}) => {
   /*
@@ -143,89 +64,6 @@ export const SecondaryButton: React.FC<{buttonState: ButtonStates}> = ({cursor, 
     color: 'colorTextLinkLight',
     backgroundColor: 'colorBackgroundBody',
     borderColor: 'colorBorderPrimaryLight',
-  };
-  const disabled = {
-    ...resetStyles,
-    ...disabledStyles,
-    _hover: disabledStyles,
-    _active: disabledStyles,
-  };
-
-  // NOTE: hover styles get overriden so we can't do "baseStyles"
-  // we have to pass base styles to each variant instead
-  // NOTE: how common is this pattern? variant + states (loading/disabled) + optional 3rd level alternator (size)
-
-  // variant as prop
-  // const as styles
-  // based on variant destructure loading/disabled
-
-  return (
-    <Box as="button" cursor={cursor} __moz_focus_inner={__moz_focus_inner} {...enabled} {...SizeStyles[size]}>
-      {children}
-    </Box>
-  );
-};
-
-export const DestructiveButton: React.FC<{buttonState: ButtonStates}> = ({
-  cursor,
-  children,
-  size,
-  __moz_focus_inner,
-}) => {
-  /*
-   * defensively resetting interaction color from over zealous legacy
-   * global styles "a {...}" when button is set as an anchor
-   */
-  const interactionColor = {color: 'colorTextInverse'};
-  const baseStyles = {
-    color: 'colorTextInverse',
-    _hover: interactionColor,
-    _focus: interactionColor,
-    _active: interactionColor,
-  };
-  const enabled = {
-    ...resetStyles,
-    ...baseStyles,
-    backgroundColor: 'colorBackgroundDestructive',
-    borderColor: 'colorBorderDestructive',
-
-    _hover: {
-      // NOTE: manual deep merge, maybe use lodash?
-      // eslint-disable-next-line no-underscore-dangle
-      ...baseStyles._hover,
-      backgroundColor: 'colorBackgroundDestructiveDarker',
-      borderColor: 'colorBorderDestructiveDarker',
-    },
-    _focus: {
-      // eslint-disable-next-line no-underscore-dangle
-      ...baseStyles._focus,
-      borderColor: 'colorBorderDestructiveDarker',
-      boxShadow: 'shadowFocus',
-    },
-    _active: {
-      // eslint-disable-next-line no-underscore-dangle
-      ...baseStyles._active,
-      backgroundColor: 'colorBackgroundDestructiveDarker',
-      borderColor: 'colorBorderDestructiveDarker',
-    },
-  };
-  const loadingStyles = {
-    color: 'colorTextInverse',
-    backgroundColor: 'colorBackgroundDestructiveDarker',
-    borderColor: 'colorBorderDestructiveDarker',
-  };
-  const loading = {
-    ...resetStyles,
-    ...loadingStyles,
-    _hover: loadingStyles,
-    _active: loadingStyles,
-    _focus: loadingStyles,
-  };
-
-  const disabledStyles = {
-    color: 'colorTextInverse',
-    backgroundColor: 'colorBackgroundDestructiveLight',
-    borderColor: 'colorBorderDestructiveLight',
   };
   const disabled = {
     ...resetStyles,
@@ -393,7 +231,10 @@ export const DestructiveLinkButton: React.FC<{buttonState: ButtonStates}> = ({
 };
 
 // memo
-export const Button: React.FC<any> = props => {
+// forwardref
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+  const {size, variant, children, ...rest} = props;
+  const buttonState = getButtonState(rest.disabled, rest.loading);
   // wrap in cache hook
   // eslint-disable-next-line no-nested-ternary
   // const cursor = loading ? 'wait' : disabled ? 'not-allowed' : 'pointer';
@@ -408,39 +249,58 @@ export const Button: React.FC<any> = props => {
     boxShadow: 'shadowFocus',
   };
 */
-  return <PrimaryButton {...props} />;
+
+  handlePropValidation(props);
+
+  // If size isn't passed, come up with a smart default:
+  // - 'reset' for variant 'link'
+  // - 'icon' if there's 1 child that's an icon
+  // - 'default' otherwise
+  let smartDefaultSize = size;
+  if (size == null) {
+    if (variant === 'link' || variant === 'destructive_link') {
+      smartDefaultSize = 'reset';
+    } else if (React.Children.count(children) === 1) {
+      React.Children.forEach(children, child => {
+        if (React.isValidElement(child)) {
+          // @ts-ignore
+          if (typeof child.type.displayName === 'string' && child.type.displayName.includes('Icon')) {
+            smartDefaultSize = 'icon';
+          }
+        }
+      });
+    } else {
+      smartDefaultSize = 'default';
+    }
+  }
+
+  const extraProps = {
+    'aria-busy': buttonState === 'loading' ? 'true' : 'false',
+    className: undefined,
+    style: undefined,
+    ref
+  }
+
+
+  switch (variant) {
+    case 'primary':
+      return (
+        <PrimaryButton buttonState={buttonState} size={smartDefaultSize as ButtonSizes} {...rest} {...extraProps}>
+          {children}
+        </PrimaryButton>
+      );
+    default:
+      return null;
+  }
 };
 
 /*
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({as, children, disabled, fullWidth, href, loading, size, tabIndex, variant, ...props}, ref) => {
+  ({as, children, disabled, fullWidth, href, loading, size ='default', tabIndex, variant, ...props}, ref) => {
     const buttonState = getButtonState(disabled, loading);
     const showLoading = buttonState === 'loading';
     const showDisabled = buttonState !== 'default';
 
-    // If size isn't passed, come up with a smart default:
-    // - 'reset' for variant 'link'
-    // - 'icon' if there's 1 child that's an icon
-    // - 'default' otherwise
-    let defaultSize = size;
-    if (defaultSize == null) {
-      defaultSize = 'default';
-
-      if (variant === 'link' || variant === 'destructive_link') {
-        defaultSize = 'reset';
-      } else if (React.Children.count(children) === 1) {
-        React.Children.forEach(children, child => {
-          if (React.isValidElement(child)) {
-            // @ts-ignore
-            if (typeof child.type.displayName === 'string' && child.type.displayName.includes('Icon')) {
-              defaultSize = 'icon';
-            }
-          }
-        });
-      }
-    }
-
-    handlePropValidation(children, variant, as, fullWidth, href, size, tabIndex);
 
     return (
       <ButtonWrapper
