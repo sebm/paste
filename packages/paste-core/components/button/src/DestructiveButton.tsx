@@ -10,7 +10,7 @@ import {DirectButtonProps} from './types';
  */
 const buttonTextColor = {color: 'colorTextInverse'};
 
-const basePrimaryStyles = {
+const baseDestructiveStyles = {
   ...ResetStyles,
   ...buttonTextColor,
   _hover: buttonTextColor,
@@ -21,68 +21,70 @@ const basePrimaryStyles = {
 const defaultStyles = {
   // NOTE: hover styles get overriden so we can't just do "...baseStyles" here,
   // we have to pass base styles to each variant instead (see _hover)
-  ...basePrimaryStyles,
+  ...baseDestructiveStyles,
   ...CursorStyles.enabled,
-  backgroundColor: 'colorBackgroundPrimary',
-  borderColor: 'colorBorderPrimary',
+  backgroundColor: 'colorBackgroundDestructive',
+  borderColor: 'colorBorderDestructive',
 
   _hover: {
     // NOTE: manual deep merge, maybe use lodash?
     // eslint-disable-next-line no-underscore-dangle
-    ...basePrimaryStyles._hover,
-    backgroundColor: 'colorBackgroundPrimaryDarker',
-    borderColor: 'colorBorderPrimaryDarker',
+    ...baseDestructiveStyles._hover,
+    backgroundColor: 'colorBackgroundDestructiveDarker',
+    borderColor: 'colorBorderDestructiveDarker',
   },
   _focus: {
     // eslint-disable-next-line no-underscore-dangle
-    ...basePrimaryStyles._focus,
-    borderColor: 'colorBorderPrimaryDarker',
+    ...baseDestructiveStyles._focus,
+    borderColor: 'colorBorderDestructiveDarker',
     boxShadow: 'shadowFocus',
   },
   _active: {
     // eslint-disable-next-line no-underscore-dangle
-    ...basePrimaryStyles._active,
-    backgroundColor: 'colorBackgroundPrimaryDark',
-    borderColor: 'colorBorderPrimaryDarker',
+    ...baseDestructiveStyles._active,
+    backgroundColor: 'colorBackgroundDestructiveDarker',
+    borderColor: 'colorBorderDestructiveDarker',
   },
 };
 const baseLoadingStyles = {
-  backgroundColor: 'colorBackgroundPrimaryDarker',
-  borderColor: 'colorBorderPrimaryDarker',
+  color: 'colorTextInverse',
+  backgroundColor: 'colorBackgroundDestructiveDarker',
+  borderColor: 'colorBorderDestructiveDarker',
 };
 /* eslint-disable no-underscore-dangle */
 const loadingStyles = {
-  ...basePrimaryStyles,
+  ...baseDestructiveStyles,
   ...CursorStyles.loading,
   ...baseLoadingStyles,
   _hover: {
-    ...basePrimaryStyles._hover,
+    ...baseDestructiveStyles._hover,
     ...baseLoadingStyles,
   },
   _active: {
-    ...basePrimaryStyles._active,
+    ...baseDestructiveStyles._active,
     ...baseLoadingStyles,
   },
   _focus: {
-    ...basePrimaryStyles._focus,
+    ...baseDestructiveStyles._focus,
     ...baseLoadingStyles,
   },
 };
 
 const baseDisabledStyles = {
-  backgroundColor: 'colorBackgroundPrimaryLight',
-  borderColor: 'colorBorderPrimaryLight',
+  color: 'colorTextInverse',
+  backgroundColor: 'colorBackgroundDestructiveLight',
+  borderColor: 'colorBorderDestructiveLight',
 };
 const disabledStyles = {
-  ...basePrimaryStyles,
+  ...baseDestructiveStyles,
   ...CursorStyles.disabled,
   ...baseDisabledStyles,
   _hover: {
-    ...basePrimaryStyles._hover,
+    ...baseDestructiveStyles._hover,
     ...baseDisabledStyles,
   },
   _active: {
-    ...basePrimaryStyles._active,
+    ...baseDestructiveStyles._active,
     ...baseDisabledStyles,
   },
 };
@@ -94,7 +96,7 @@ const ButtonStyles = {
   disabled: disabledStyles,
 };
 
-export const PrimaryButton: React.FC<DirectButtonProps> = ({
+export const DestructiveButton: React.FC<DirectButtonProps> = ({
   as = 'button',
   loading,
   disabled,

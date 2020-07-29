@@ -8,81 +8,72 @@ import {DirectButtonProps} from './types';
  * defensively resetting interaction color from over zealous legacy
  * global styles "a {...}" when button is set as an anchor
  */
-const buttonTextColor = {color: 'colorTextInverse'};
+const buttonTextColor = {color: 'colorTextLinkDestructive'};
 
-const basePrimaryStyles = {
+const baseDestructiveLinkStyles = {
   ...ResetStyles,
   ...buttonTextColor,
-  _hover: buttonTextColor,
-  _focus: buttonTextColor,
-  _active: buttonTextColor,
+  backgroundColor: 'transparent',
+  _hover: {color: 'colorTextLinkDestructiveDark', textDecoration: 'underline'},
+  _focus: {color: 'colorTextLinkDestructiveDark', textDecoration: 'underline'},
+  _active: {color: 'colorTextLinkDestructiveDarker', textDecoration: 'underline'},
 };
 
 const defaultStyles = {
   // NOTE: hover styles get overriden so we can't just do "...baseStyles" here,
   // we have to pass base styles to each variant instead (see _hover)
-  ...basePrimaryStyles,
+  ...baseDestructiveLinkStyles,
   ...CursorStyles.enabled,
-  backgroundColor: 'colorBackgroundPrimary',
-  borderColor: 'colorBorderPrimary',
 
   _hover: {
     // NOTE: manual deep merge, maybe use lodash?
     // eslint-disable-next-line no-underscore-dangle
-    ...basePrimaryStyles._hover,
-    backgroundColor: 'colorBackgroundPrimaryDarker',
-    borderColor: 'colorBorderPrimaryDarker',
+    ...baseDestructiveLinkStyles._hover,
   },
   _focus: {
     // eslint-disable-next-line no-underscore-dangle
-    ...basePrimaryStyles._focus,
-    borderColor: 'colorBorderPrimaryDarker',
-    boxShadow: 'shadowFocus',
+    ...baseDestructiveLinkStyles._focus,
   },
   _active: {
     // eslint-disable-next-line no-underscore-dangle
-    ...basePrimaryStyles._active,
-    backgroundColor: 'colorBackgroundPrimaryDark',
-    borderColor: 'colorBorderPrimaryDarker',
+    ...baseDestructiveLinkStyles._active,
   },
 };
 const baseLoadingStyles = {
-  backgroundColor: 'colorBackgroundPrimaryDarker',
-  borderColor: 'colorBorderPrimaryDarker',
+  color: 'colorTextLinkDestructiveDarker',
 };
 /* eslint-disable no-underscore-dangle */
 const loadingStyles = {
-  ...basePrimaryStyles,
+  ...baseDestructiveLinkStyles,
   ...CursorStyles.loading,
   ...baseLoadingStyles,
   _hover: {
-    ...basePrimaryStyles._hover,
+    ...baseDestructiveLinkStyles._hover,
     ...baseLoadingStyles,
   },
   _active: {
-    ...basePrimaryStyles._active,
+    ...baseDestructiveLinkStyles._active,
     ...baseLoadingStyles,
   },
   _focus: {
-    ...basePrimaryStyles._focus,
+    ...baseDestructiveLinkStyles._focus,
     ...baseLoadingStyles,
   },
 };
 
 const baseDisabledStyles = {
-  backgroundColor: 'colorBackgroundPrimaryLight',
-  borderColor: 'colorBorderPrimaryLight',
+  color: 'colorTextLinkDestructiveLight',
 };
 const disabledStyles = {
-  ...basePrimaryStyles,
+  ...baseDestructiveLinkStyles,
   ...CursorStyles.disabled,
   ...baseDisabledStyles,
   _hover: {
-    ...basePrimaryStyles._hover,
+    ...baseDestructiveLinkStyles._hover,
     ...baseDisabledStyles,
   },
   _active: {
-    ...basePrimaryStyles._active,
+    ...baseDestructiveLinkStyles._active,
     ...baseDisabledStyles,
   },
 };
@@ -94,7 +85,7 @@ const ButtonStyles = {
   disabled: disabledStyles,
 };
 
-export const PrimaryButton: React.FC<DirectButtonProps> = ({
+export const DestructiveLinkButton: React.FC<DirectButtonProps> = ({
   as = 'button',
   loading,
   disabled,
