@@ -28,7 +28,7 @@
     "build:website": "yarn workspace @twilio-paste/website build",
     "build:props": "lerna run build:props --ignore @twilio-paste/website --concurrency 2",
     "pre-push": "concurrently \"yarn:lint\" \"yarn:test\" \"yarn:prettier\" \"yarn:type-check\"",
-    "release": "yarn lerna publish -m 'chore(release): publish' --conventional-commits --canary --preid beta",
+    "release": "yarn lerna publish -m 'chore(release): publish' --conventional-commits --canary --preid beta --dist-tag next",
     "release:stable": "yarn lerna publish -m 'chore(release): publish' --conventional-commits",
     "release:stable:ci": "yarn lerna publish -y --loglevel verbose -m 'chore(release): publish' --conventional-commits",
     "release:stable:npm-failed": "yarn lerna publish from-package -y --loglevel verbose -m 'chore(release): publish' --conventional-commits",
