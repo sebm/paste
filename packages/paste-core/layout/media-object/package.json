@@ -3,7 +3,7 @@
   "version": "1.2.57",
   "category": "layout",
   "status": "beta",
-  "description": "",
+  "description": "The Media Object is the layout utility that you may never have heard of but after this you'll never unsee it.",
   "author": "Twilio Inc.",
   "license": "MIT",
   "main:dev": "src/index.tsx",
